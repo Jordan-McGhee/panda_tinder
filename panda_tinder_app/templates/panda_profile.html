@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+</head>
+<body>
+    <div class="container">
+        <a href="/">Home</a>
+        <h1>Welcome to {{this_panda.name}}'s Profile</h1>
+        <p>Age: {{this_panda.age}}</p>
+        <p>Favorite Food: {{this_panda.favorite_food}}</p>
+    </div>
+
+    <div class="post">
+        <form action="/post/create" method="POST">
+            {% csrf_token%}
+            <label for="">Message</label>
+            <input type="text" name="panda_post" id="">
+            <input type="hidden" name="hidden_input" value="{{this_panda.id}}">
+            <input type="submit" value="Create Post">
+        </form>
+    </div>
+
+    <div class="messages">
+        {% for message in this_panda.posts.all reversed %}
+            <p>{{this_panda.name}}: "{{ message.content }}" at {{message.created_at}}</p>
+        {% endfor %}
+    </div>
+
+    <div class="dates">
+        <form action="/date/create" method="POST">
+            {% csrf_token%}
+            <label for="date">Who do you want to ask on a Panda Date?</label>
+            <select name="date" id="">
+            {% for panda in all_pandas %}
+                {% if panda.id != this_panda.id %}
+                <option value="{{panda.id}}">{{panda.name}}</option>
+                {% endif %}
+            {% endfor %}
+            </select>
+            
+            <label for="when">When do you want to go?</label>
+            <input type="date" name="when">
+
+            <label for="where">Where do you want to go?</label>
+            <input type="text" name="where">
+
+            <input type="hidden" name="hidden_id" value="{{this_panda.id}}">
+            <input type="submit" value="Create Date">
+        </form>
+    </div>
+
+    <div class="all_dates">
+        <ul>
+        {% for date in this_panda.dates.all %}
+        <h1>{{date.id}}</h1>
+            {% for p in date.pandas_on_date.all %}
+            <li>{{p.name}}</li>
+            {% endfor %}
+            <li>They went to {{date.location}}</li>
+            <li>Their date was on {{date.date}}</li>
+        {% endfor %}
+        </ul>
+    </div>
+
+</body>
+</html>

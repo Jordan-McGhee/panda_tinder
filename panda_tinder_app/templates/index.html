@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <h1>WELCOME TO PANDA TINDER</h1>
+        <form action="/create" method="POST">
+            {% csrf_token %}
+            
+
+            <label for="name">Name</label>
+            <input name="name" type="text">
+
+            <label for="age">Age</label>
+            <input name="age" type="number">
+
+            <label for="favorite_food">Favorite Food</label>
+            <input name="favorite_food"type="text">
+
+            <label for="knows_kungfu">Do you know Kungfu?</label>
+            <label for="knows_kungfu">Yes</label>
+            <input name="knows_kungfu" type="radio" value="True">
+            <label for="knows_kungfu">No</label>
+            <input name="knows_kungfu" type="radio" value="False">
+            
+
+
+            <input type="submit" value="Create Panda">
+        </form>
+    </div>
+
+    <div>
+        <table>
+            <thead>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Favorite Food</th>
+                <th>Knows Kungfu</th>
+            </thead>
+            <tbody>
+                {% for panda in all_pandas %}
+                <tr>
+                    <td><a href="/panda/{{panda.id}}">{{panda.name}}</a></td>
+                    <td>{{panda.age}}</td>
+                    <td>{{panda.favorite_food}}</td>
+                    <td>{{panda.knows_kungfu}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
